@@ -34,3 +34,16 @@ CI covers environment configuration tests, lint, typecheck and build. A dependen
 - [x] Add the NestJS API shell, Zod-validated environment defaults and `/healthz` process check.
 - [x] Add `dev`, `dev:web`, `dev:api`, `build`, `lint` and `typecheck` workspace commands; verify both apps start.
 - [ ] T0-05 remaining work: readiness checks, Pino redaction and documented global error envelope.
+
+## M3 database-backed platform directory (in progress)
+
+- [x] Add PostgreSQL/Drizzle schema for platforms, vocabularies, verification facts and sources, links, histories, warnings, and popularity snapshots.
+- [x] Generate Drizzle migrations; schema diff reports no remaining schema changes.
+- [x] Add safe, repeatable local seed examples as unpublished drafts only.
+- [x] Add shared Zod request/response contracts and OpenAPI for directory listing, filter facets, and platform detail routes.
+- [x] Implement published-platform listing, normalized Arabic/Latin search, filters, pagination, sorting, and public detail assembly in the API.
+- [x] Replace the disconnected directory placeholder with an RTL Next.js directory, multi-select filters, removable filter chips, pagination, detail pages, and loading/empty/error states.
+- [x] Add API contract and OpenAPI tests; lint, typecheck, and production build pass.
+- [ ] Apply migrations and run API/database integration tests against PostgreSQL; do not mark M3 complete until those pass.
+- [ ] Populate publishable taxonomy and platform facts through the approved verification workflow; current seed examples stay unpublished.
+- [ ] Connect rating aggregates and rating sorting after the review/rating projection exists; do not synthesize ratings.

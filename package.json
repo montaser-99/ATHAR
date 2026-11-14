@@ -3,15 +3,19 @@
   "private": true,
   "packageManager": "pnpm@12.18.0",
   "scripts": {
-    "dev": "corepack pnpm --parallel --filter @athar/web --filter @athar/api dev",
-    "dev:web": "corepack pnpm --filter @athar/web dev",
+    "dev": "corepack pnpm --filter @athar/contracts build && corepack pnpm --parallel --filter @athar/web --filter @athar/api dev",
+    "dev:web": "corepack pnpm --filter @athar/contracts build && corepack pnpm --filter @athar/web dev",
     "dev:api": "corepack pnpm --filter @athar/api dev",
     "services:up": "docker compose --env-file .env -f infra/compose/compose.yaml up -d",
     "services:down": "docker compose --env-file .env -f infra/compose/compose.yaml down",
     "test:env": "corepack pnpm --filter @athar/api test:env",
-    "build": "corepack pnpm --filter @athar/web build && corepack pnpm --filter @athar/api build",
+    "test:api": "corepack pnpm --filter @athar/api test:env && corepack pnpm --filter @athar/api test:directory",
+    "db:generate": "corepack pnpm --filter @athar/api db:generate",
+    "db:migrate": "corepack pnpm --filter @athar/api db:migrate",
+    "db:seed": "corepack pnpm --filter @athar/api db:seed",
+    "build": "corepack pnpm --filter @athar/contracts build && corepack pnpm --filter @athar/web build && corepack pnpm --filter @athar/api build",
     "lint": "eslint .",
-    "typecheck": "corepack pnpm --filter @athar/web typecheck && corepack pnpm --filter @athar/api typecheck"
+    "typecheck": "corepack pnpm --filter @athar/contracts build && corepack pnpm --filter @athar/web typecheck && corepack pnpm --filter @athar/api typecheck"
   },
   "devDependencies": {
     "eslint": "^10.14.0",
