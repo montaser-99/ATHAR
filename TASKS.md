@@ -21,5 +21,6 @@
 - [x] T0-F Create the documented pnpm workspace, strict TypeScript base and shared tooling config.
 - [x] T0-G Create concise continuity files.
 - [x] Install and verify the workspace lockfile, lint and typecheck.
+- [x] Create the initial foundation commit on `main` and push it to the verified-empty `origin` (commit `9e7f6f043b303441ac68f4c0f1f2850433685eab`).
 - [ ] T0-03 Add CI for the workspace checks (next task).
 - [ ] T0-04 Add the documented local development environment.
