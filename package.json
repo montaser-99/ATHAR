@@ -1,6 +1,7 @@
 {
     "name": "athar",
     "private": true,
+    "packageManager": "pnpm@12.18.0",
     "scripts": {
         "dev": "corepack pnpm --parallel --filter @athar/web --filter @athar/api dev",
         "dev:web": "corepack pnpm --filter @athar/web dev",

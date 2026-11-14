@@ -22,8 +22,10 @@
 - [x] T0-G Create concise continuity files.
 - [x] Install and verify the workspace lockfile, lint and typecheck.
 - [x] Create the initial foundation commit on `main` and push it to the verified-empty `origin` (commit `9e7f6f043b303441ac68f4c0f1f2850433685eab`).
-- [ ] T0-03 Add CI for the workspace checks (next task).
+- [x] T0-03 Add GitHub Actions CI for frozen install, lint, typecheck and build on pushes and pull requests targeting `main`.
 - [ ] T0-04 Add the documented local development environment (Docker Compose remains pending because Docker is unavailable here).
+
+CI currently covers the available lint, typecheck and build scripts. No test or dependency-audit script is configured yet.
 
 ## First runnable application slice
 
