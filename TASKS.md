@@ -23,4 +23,12 @@
 - [x] Install and verify the workspace lockfile, lint and typecheck.
 - [x] Create the initial foundation commit on `main` and push it to the verified-empty `origin` (commit `9e7f6f043b303441ac68f4c0f1f2850433685eab`).
 - [ ] T0-03 Add CI for the workspace checks (next task).
-- [ ] T0-04 Add the documented local development environment.
+- [ ] T0-04 Add the documented local development environment (Docker Compose remains pending because Docker is unavailable here).
+
+## First runnable application slice
+
+- [x] T0-06 Set up the strict Next.js App Router shell with Arabic RTL, self-hosted IBM Plex fonts, Tailwind and shared light-theme design tokens.
+- [x] Add the responsive ATHAR homepage, category examples, search layout and explicit unconnected directory empty state.
+- [x] Add the NestJS API shell, Zod-validated environment defaults and `/healthz` process check.
+- [x] Add `dev`, `dev:web`, `dev:api`, `build`, `lint` and `typecheck` workspace commands; verify both apps start.
+- [ ] T0-05 remaining work: readiness checks, Pino redaction and documented global error envelope.

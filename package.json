@@ -2,8 +2,12 @@
     "name": "athar",
     "private": true,
     "scripts": {
+        "dev": "corepack pnpm --parallel --filter @athar/web --filter @athar/api dev",
+        "dev:web": "corepack pnpm --filter @athar/web dev",
+        "dev:api": "corepack pnpm --filter @athar/api dev",
+        "build": "corepack pnpm --filter @athar/web build && corepack pnpm --filter @athar/api build",
         "lint": "eslint .",
-        "typecheck": "tsc --noEmit"
+        "typecheck": "corepack pnpm --filter @athar/web typecheck && corepack pnpm --filter @athar/api typecheck"
     },
     "devDependencies": {
         "eslint": "^10.14.0",

@@ -1,0 +1,31 @@
+@theme inline {
+  --color-page: var(--color-bg);
+  --color-ink: var(--color-text);
+  --color-muted: var(--color-text-muted);
+  --color-primary: var(--color-brand);
+  --font-sans: "IBM Plex Sans Arabic", "IBM Plex Sans", Tahoma, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+  --color-bg: #faf8f5;
+  --color-surface: #fff;
+  --color-surface-subtle: #f3efe9;
+  --color-text: #1c2024;
+  --color-text-muted: #555b62;
+  --color-border: #d9d4cb;
+  --color-border-strong: #7a7f86;
+  --color-brand: #0e6b6f;
+  --color-brand-hover: #0a5559;
+  --color-brand-active: #07454a;
+  --color-brand-soft: #e3f1f1;
+  --color-secondary: #9a4a0c;
+  --color-focus: #0b57d0;
+  --font-arabic: "IBM Plex Sans Arabic", Tahoma, system-ui, sans-serif;
+  --font-latin: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-arabic);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
