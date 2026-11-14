@@ -1,0 +1,10 @@
+{
+  "name": "@athar/config",
+  "private": true,
+  "version": "0.0.0",
+  "exports": {
+    "./eslint": "./eslint.config.mjs",
+    "./prettier": "./prettier.config.mjs",
+    "./tsconfig/base.json": "./tsconfig.base.json"
+  }
+}

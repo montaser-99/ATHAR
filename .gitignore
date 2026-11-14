@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+secrets/
+.credentials/
+**/credentials*.json
+**/secrets*.json
+*.secret
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Build outputs
+.next/
+dist/
+build/
+out/
+coverage/
+*.tsbuildinfo
+
+# Caches and generated files
+.cache/
+.turbo/
+.eslintcache
+.prettier-cache/
+playwright-report/
+test-results/
+*.log
+
+# Local tooling / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
