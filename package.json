@@ -1,19 +1,22 @@
 {
-    "name": "athar",
-    "private": true,
-    "packageManager": "pnpm@12.18.0",
-    "scripts": {
-        "dev": "corepack pnpm --parallel --filter @athar/web --filter @athar/api dev",
-        "dev:web": "corepack pnpm --filter @athar/web dev",
-        "dev:api": "corepack pnpm --filter @athar/api dev",
-        "build": "corepack pnpm --filter @athar/web build && corepack pnpm --filter @athar/api build",
-        "lint": "eslint .",
-        "typecheck": "corepack pnpm --filter @athar/web typecheck && corepack pnpm --filter @athar/api typecheck"
-    },
-    "devDependencies": {
-        "eslint": "^10.14.0",
-        "prettier": "^3.10.1",
-        "typescript": "5.9.3",
-        "typescript-eslint": "^8.72.2"
-    }
+  "name": "athar",
+  "private": true,
+  "packageManager": "pnpm@12.18.0",
+  "scripts": {
+    "dev": "corepack pnpm --parallel --filter @athar/web --filter @athar/api dev",
+    "dev:web": "corepack pnpm --filter @athar/web dev",
+    "dev:api": "corepack pnpm --filter @athar/api dev",
+    "services:up": "docker compose --env-file .env -f infra/compose/compose.yaml up -d",
+    "services:down": "docker compose --env-file .env -f infra/compose/compose.yaml down",
+    "test:env": "corepack pnpm --filter @athar/api test:env",
+    "build": "corepack pnpm --filter @athar/web build && corepack pnpm --filter @athar/api build",
+    "lint": "eslint .",
+    "typecheck": "corepack pnpm --filter @athar/web typecheck && corepack pnpm --filter @athar/api typecheck"
+  },
+  "devDependencies": {
+    "eslint": "^10.14.0",
+    "prettier": "^3.10.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.72.2"
+  }
 }

@@ -6,6 +6,7 @@
     "dev": "nest start --watch",
     "build": "nest build",
     "start": "node dist/main.js",
+    "test:env": "corepack pnpm build && node --test test/env.test.mjs",
     "typecheck": "tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {

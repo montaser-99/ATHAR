@@ -23,9 +23,9 @@
 - [x] Install and verify the workspace lockfile, lint and typecheck.
 - [x] Create the initial foundation commit on `main` and push it to the verified-empty `origin` (commit `9e7f6f043b303441ac68f4c0f1f2850433685eab`).
 - [x] T0-03 Add GitHub Actions CI for frozen install, lint, typecheck and build on pushes and pull requests targeting `main`.
-- [ ] T0-04 Add the documented local development environment (Docker Compose remains pending because Docker is unavailable here).
+- [ ] T0-04 Add the documented local development environment (Compose and API environment validation are implemented; container startup verification remains pending because Docker is unavailable here).
 
-CI currently covers the available lint, typecheck and build scripts. No test or dependency-audit script is configured yet.
+CI covers environment configuration tests, lint, typecheck and build. A dependency-audit script is not configured yet.
 
 ## First runnable application slice
 

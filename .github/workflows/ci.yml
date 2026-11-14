@@ -44,5 +44,8 @@ jobs:
       - name: Typecheck
         run: corepack pnpm typecheck
 
+      - name: Test environment configuration
+        run: corepack pnpm test:env
+
       - name: Build
         run: corepack pnpm build
