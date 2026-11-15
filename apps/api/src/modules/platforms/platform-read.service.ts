@@ -85,7 +85,7 @@ export class PlatformReadService {
     const conditions = [eq(platforms.lifecycle, 'published')];
     if (query.availability?.length) {
       conditions.push(inArray(platforms.availabilityState, query.availability));
-    } else if (!normalizedQuery) {
+    } else {
       conditions.push(ne(platforms.availabilityState, 'suspended_or_closed'));
     }
 
@@ -152,17 +152,7 @@ export class PlatformReadService {
         sql`${normalizedSql(platforms.name)} LIKE ${term}`,
         sql`${normalizedSql(platforms.slug)} LIKE ${term}`,
       )!;
-      conditions.push(
-        query.availability?.length
-          ? or(nameOrSlugMatch, vocabSearch)!
-          : or(
-              nameOrSlugMatch,
-              and(
-                ne(platforms.availabilityState, 'suspended_or_closed'),
-                vocabSearch,
-              ),
-            )!,
-      );
+      conditions.push(or(nameOrSlugMatch, vocabSearch)!);
     }
 
     const where = and(...conditions);

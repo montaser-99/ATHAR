@@ -8,6 +8,7 @@
     "start": "node dist/main.js",
     "test:env": "corepack pnpm build && node --test test/env.test.mjs",
     "test:directory": "corepack pnpm build && node --test test/directory-query.test.mjs",
+    "test:db:integration": "corepack pnpm build && node --test test/database-directory.integration.test.mjs",
     "db:generate": "drizzle-kit generate --config drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config drizzle.config.ts",
     "db:seed": "corepack pnpm build && node dist/platform/database/seed.js",

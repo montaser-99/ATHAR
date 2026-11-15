@@ -7,13 +7,18 @@ import { platforms } from './schema';
 
 config({ path: resolve(process.cwd(), '../../.env') });
 
-if (process.env.NODE_ENV === 'production')
-  throw new Error('Development seed data cannot run in production.');
+if (process.env.NODE_ENV !== 'development')
+  throw new Error('Development seed data requires NODE_ENV=development.');
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl)
   throw new Error(
     'DATABASE_URL is required to seed local development data. Copy .env.example to .env.',
+  );
+const databaseHost = new URL(databaseUrl).hostname;
+if (!['localhost', '127.0.0.1', '::1'].includes(databaseHost))
+  throw new Error(
+    'Development seed data can only run against local PostgreSQL.',
   );
 
 const examples = [

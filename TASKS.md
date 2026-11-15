@@ -47,6 +47,16 @@ CI covers environment configuration tests, lint, typecheck and build. A dependen
 - [x] Hide absent rating/verification metadata instead of implying values, and render recoverable directory/detail API error states.
 - [x] Verify homepage RTL and mobile navigation in a browser at desktop and mobile viewports; real directory records remain unverified without PostgreSQL.
 - [x] Add API contract and OpenAPI tests; lint, typecheck, and production build pass.
-- [ ] Apply migrations and run API/database integration tests against PostgreSQL; do not mark M3 complete until those pass.
+- [x] Add repeatable PostgreSQL integration coverage guarded by an explicit disposable database URL; include published visibility, search, filters, pagination, verified details, and error handling.
+- [ ] Apply migrations and run the integration suite against PostgreSQL; do not mark M3 complete until those database checks pass.
 - [ ] Populate publishable taxonomy and platform facts through the approved verification workflow; current seed examples stay unpublished.
 - [ ] Connect rating aggregates and rating sorting after the review/rating projection exists; do not synthesize ratings.
+
+## PostgreSQL integration readiness (2026-11-15)
+
+- [x] Audit Drizzle schema, migration journal/order, database environment handling, and development seed safety.
+- [x] Keep default directory search/listing published-only and exclude suspended/closed platforms unless explicitly filtered by availability.
+- [x] Restrict development seeds to `NODE_ENV=development` and loopback PostgreSQL; seed examples remain drafts and inserts are conflict-safe.
+- [x] Add database-independent migration-journal, seed-safety, database-error propagation, and generic API error-envelope checks.
+- [x] Add repeatable integration coverage that requires a dedicated `*_test` PostgreSQL URL and exercises listing, search, supported filters, pagination, suspended visibility, verified detail sources, and database/API errors.
+- [ ] Apply migrations and run the integration suite against a real disposable PostgreSQL database; unavailable in the current environment.
