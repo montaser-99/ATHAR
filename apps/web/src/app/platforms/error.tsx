@@ -7,7 +7,7 @@ export default function PlatformsError({
   reset: () => void;
 }) {
   return (
-    <main className="directory-page">
+    <main className="directory-page" id="main-content">
       <div className="container">
         <section className="directory-empty directory-page-empty" role="alert">
           <div className="empty-icon" aria-hidden="true">

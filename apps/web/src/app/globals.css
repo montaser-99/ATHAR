@@ -231,3 +231,48 @@ h1, h2, h3, p { margin-block-start: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+.skip-link { position: fixed; z-index: 30; inset-block-start: 12px; inset-inline-start: 12px; padding: 12px 16px; border-radius: 10px; background: var(--color-surface); color: var(--color-brand); box-shadow: 0 8px 24px rgb(28 32 36 / 18%); transform: translateY(-160%); }
+.skip-link:focus { transform: translateY(0); }
+.home-empty { margin-block-start: 8px; }
+.filter-disclosure { padding-block-start: 16px; }
+.filter-disclosure > summary { width: fit-content; padding-block: 4px; color: var(--color-brand); font-size: 13px; font-weight: 700; cursor: pointer; }
+.filter-disclosure > summary:focus-visible { border-radius: 4px; }
+.filter-grid { padding-block-start: 12px; }
+.results-controls { display: flex; align-items: center; gap: 18px; }
+.view-toggle { display: inline-flex; padding: 3px; border: 1px solid var(--color-border); border-radius: 11px; background: var(--color-surface); }
+.view-toggle a { min-height: 34px; display: inline-flex; align-items: center; justify-content: center; padding-inline: 11px; border-radius: 8px; color: var(--color-text-muted); font-size: 12px; }
+.view-toggle a[aria-current="page"] { background: var(--color-brand-soft); color: var(--color-brand); font-weight: 700; }
+.platform-card { position: relative; min-height: 280px; transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease; }
+.platform-card:hover { transform: translateY(-2px); border-color: rgb(14 107 111 / 42%); box-shadow: 0 14px 28px rgb(28 32 36 / 7%); }
+.platform-initial { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid rgb(14 107 111 / 20%); border-radius: 16px 16px 16px 5px; background: var(--color-brand-soft); color: var(--color-brand); font-size: 23px; font-weight: 700; }
+.platform-card h3 { margin-block-start: 16px; }
+.platform-card-meta { border-block-start: 1px solid var(--color-border); }
+.platform-card-list { grid-template-columns: minmax(0, 1fr); }
+.platform-card-list .platform-card { min-height: auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px 22px; }
+.platform-card-list .platform-initial { grid-column: 2; grid-row: 1 / span 3; }
+.platform-card-list .platform-card-topline { grid-column: 1; grid-row: 1; justify-content: flex-start; }
+.platform-card-list .platform-card h3 { grid-column: 1; grid-row: 2; margin: 0; }
+.platform-card-list .platform-categories { grid-column: 1; grid-row: 3; }
+.platform-card-list .restriction-note, .platform-card-list .platform-card-meta, .platform-card-list .platform-card-link { grid-column: 1 / -1; }
+.platform-card-list .platform-card-meta { margin-block-start: 3px; padding-block: 12px 2px; }
+.directory-search-row:focus-within { border-color: var(--color-brand); box-shadow: 0 0 0 3px rgb(14 107 111 / 12%); }
+.directory-search-row input:focus-visible { outline: 0; }
+.filter-check:hover { color: var(--color-brand); }
+.filter-submit { margin-block-start: 10px; }
+.directory-empty { box-shadow: 0 8px 24px rgb(28 32 36 / 3%); }
+.platform-detail-heading { align-items: flex-start; }
+.detail-empty { margin-block-start: 15px; }
+.home-platform-grid { margin-block-start: 12px; }
+.home-directory-action { display: flex; justify-content: center; margin-block-start: 28px; }
+
+@media (max-width: 850px) {
+  .results-controls { align-items: flex-end; flex-direction: column-reverse; gap: 9px; }
+}
+@media (max-width: 620px) {
+  .results-controls { width: 100%; align-items: center; flex-direction: row; justify-content: space-between; }
+  .directory-results-heading { align-items: stretch; }
+  .platform-card-list .platform-card { grid-template-columns: minmax(0, 1fr) auto; gap: 10px 14px; padding: 17px; }
+  .platform-card-list .platform-initial { width: 42px; height: 42px; }
+  .platform-card-list .platform-card-topline { flex-wrap: wrap; }
+}

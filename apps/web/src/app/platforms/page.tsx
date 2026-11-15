@@ -4,6 +4,8 @@ import {
   type PlatformDirectoryQuery,
 } from '@athar/contracts';
 import { getDirectory } from '../../lib/directory';
+import { DirectoryLoadError } from '../../components/directory-load-error';
+import { PlatformCard } from '../../components/platform-card';
 
 type SearchParams = Record<string, string | string[] | undefined>;
 type PlatformsPageProps = { searchParams: Promise<SearchParams> };
@@ -35,7 +37,13 @@ function getQueryInput(params: SearchParams): Record<string, unknown> {
   );
 }
 
-function pageHref(query: PlatformDirectoryQuery, page: number): string {
+type DirectoryView = 'grid' | 'list';
+
+function pageHref(
+  query: PlatformDirectoryQuery,
+  page: number,
+  view: DirectoryView,
+): string {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries({ ...query, page })) {
     if (value === undefined) continue;
@@ -43,6 +51,7 @@ function pageHref(query: PlatformDirectoryQuery, page: number): string {
       value.forEach((item) => params.append(key, String(item)));
     else params.set(key, String(value));
   }
+  params.set('view', view);
   return `/platforms?${params.toString()}`;
 }
 
@@ -50,6 +59,7 @@ function removeFilterHref(
   query: PlatformDirectoryQuery,
   key: string,
   value?: string,
+  view: DirectoryView = 'grid',
 ): string {
   const next: Record<string, unknown> = { ...query, page: 1 };
   const current = next[key];
@@ -67,6 +77,7 @@ function removeFilterHref(
       item.forEach((entry) => params.append(name, String(entry)));
     else params.set(name, String(item));
   }
+  params.set('view', view);
   return `/platforms?${params.toString()}`;
 }
 
@@ -75,7 +86,17 @@ export default async function PlatformsPage({
 }: PlatformsPageProps) {
   const params = await searchParams;
   const query = PlatformDirectoryQuerySchema.parse(getQueryInput(params));
-  const result = await getDirectory(query);
+  const view: DirectoryView = params.view === 'list' ? 'list' : 'grid';
+  const result = await getDirectory(query).catch(() => null);
+  if (!result) {
+    return (
+      <main className="directory-page" id="main-content">
+        <div className="container">
+          <DirectoryLoadError retryHref={pageHref(query, 1, view)} />
+        </div>
+      </main>
+    );
+  }
   const categories = result.facets.category ?? [];
   const opportunities = result.facets.opportunity_type ?? [];
   const payments = result.facets.payment_method ?? [];
@@ -116,7 +137,7 @@ export default async function PlatformsPage({
     });
 
   return (
-    <main className="directory-page">
+    <main className="directory-page" id="main-content">
       <div className="container">
         <Link className="back-link" href="/">
           ← الصفحة الرئيسية
@@ -153,120 +174,127 @@ export default async function PlatformsPage({
               ابحث
             </button>
           </div>
-          <div className="filter-grid">
-            <fieldset className="filter-group">
-              <legend>المجال</legend>
-              {categories.map((option) => (
-                <label className="filter-check" key={option.id}>
-                  <input
-                    type="checkbox"
-                    name="category"
-                    value={option.slug}
-                    defaultChecked={query.category?.includes(option.slug)}
-                  />
-                  <span>{option.labelAr}</span>
-                </label>
-              ))}
-              {categories.length === 0 && (
-                <span className="filter-unavailable">
-                  لا توجد خيارات مضافة حتى الآن
-                </span>
-              )}
-            </fieldset>
-            <fieldset className="filter-group">
-              <legend>حالة الإتاحة</legend>
-              {Object.entries(stateLabels).map(([value, label]) => (
-                <label className="filter-check" key={value}>
-                  <input
-                    type="checkbox"
-                    name="availability"
-                    value={value}
-                    defaultChecked={query.availability?.includes(
-                      value as NonNullable<
-                        PlatformDirectoryQuery['availability']
-                      >[number],
-                    )}
-                  />
-                  <span>{label}</span>
-                </label>
-              ))}
-            </fieldset>
-            <fieldset className="filter-group">
-              <legend>نوع الفرصة</legend>
-              {opportunities.map((option) => (
-                <label className="filter-check" key={option.id}>
-                  <input
-                    type="checkbox"
-                    name="opportunityType"
-                    value={option.slug}
-                    defaultChecked={query.opportunityType?.includes(
-                      option.slug,
-                    )}
-                  />
-                  <span>{option.labelAr}</span>
-                </label>
-              ))}
-              {opportunities.length === 0 && (
-                <span className="filter-unavailable">
-                  لا توجد خيارات مضافة حتى الآن
-                </span>
-              )}
-            </fieldset>
-            <fieldset className="filter-group">
-              <legend>طريقة الدفع</legend>
-              {payments.map((option) => (
-                <label className="filter-check" key={option.id}>
-                  <input
-                    type="checkbox"
-                    name="paymentMethod"
-                    value={option.slug}
-                    defaultChecked={query.paymentMethod?.includes(option.slug)}
-                  />
-                  <span>{option.labelAr}</span>
-                </label>
-              ))}
-              {payments.length === 0 && (
-                <span className="filter-unavailable">
-                  لا توجد خيارات مضافة حتى الآن
-                </span>
-              )}
-            </fieldset>
-            <fieldset className="filter-group">
-              <legend>الخبرة المطلوبة</legend>
-              {experienceLevels.map((option) => (
-                <label className="filter-check" key={option.id}>
-                  <input
-                    type="checkbox"
-                    name="experienceLevel"
-                    value={option.slug}
-                    defaultChecked={query.experienceLevel?.includes(
-                      option.slug,
-                    )}
-                  />
-                  <span>{option.labelAr}</span>
-                </label>
-              ))}
-              {experienceLevels.length === 0 && (
-                <span className="filter-unavailable">
-                  لا توجد خيارات مضافة حتى الآن
-                </span>
-              )}
-            </fieldset>
-            <label className="sort-control">
-              الترتيب
-              <select
-                name="sort"
-                defaultValue={
-                  query.sort ?? (query.q ? 'relevance' : 'popularity')
-                }
-              >
-                <option value="popularity">الأكثر متابعة</option>
-                <option value="newest">الأحدث</option>
-                <option value="last_verification">تاريخ آخر مراجعة</option>
-              </select>
-            </label>
-            <input type="hidden" name="pageSize" value={query.pageSize} />
-          </div>
+          <details className="filter-disclosure" open>
+            <summary>التصفية حسب المجال وطبيعة العمل</summary>
+            <div className="filter-grid">
+              <fieldset className="filter-group">
+                <legend>المجال</legend>
+                {categories.map((option) => (
+                  <label className="filter-check" key={option.id}>
+                    <input
+                      type="checkbox"
+                      name="category"
+                      value={option.slug}
+                      defaultChecked={query.category?.includes(option.slug)}
+                    />
+                    <span>{option.labelAr}</span>
+                  </label>
+                ))}
+                {categories.length === 0 && (
+                  <span className="filter-unavailable">
+                    لا توجد خيارات مضافة حتى الآن
+                  </span>
+                )}
+              </fieldset>
+              <fieldset className="filter-group">
+                <legend>حالة الإتاحة</legend>
+                {Object.entries(stateLabels).map(([value, label]) => (
+                  <label className="filter-check" key={value}>
+                    <input
+                      type="checkbox"
+                      name="availability"
+                      value={value}
+                      defaultChecked={query.availability?.includes(
+                        value as NonNullable<
+                          PlatformDirectoryQuery['availability']
+                        >[number],
+                      )}
+                    />
+                    <span>{label}</span>
+                  </label>
+                ))}
+              </fieldset>
+              <fieldset className="filter-group">
+                <legend>نوع الفرصة</legend>
+                {opportunities.map((option) => (
+                  <label className="filter-check" key={option.id}>
+                    <input
+                      type="checkbox"
+                      name="opportunityType"
+                      value={option.slug}
+                      defaultChecked={query.opportunityType?.includes(
+                        option.slug,
+                      )}
+                    />
+                    <span>{option.labelAr}</span>
+                  </label>
+                ))}
+                {opportunities.length === 0 && (
+                  <span className="filter-unavailable">
+                    لا توجد خيارات مضافة حتى الآن
+                  </span>
+                )}
+              </fieldset>
+              <fieldset className="filter-group">
+                <legend>طريقة الدفع</legend>
+                {payments.map((option) => (
+                  <label className="filter-check" key={option.id}>
+                    <input
+                      type="checkbox"
+                      name="paymentMethod"
+                      value={option.slug}
+                      defaultChecked={query.paymentMethod?.includes(
+                        option.slug,
+                      )}
+                    />
+                    <span>{option.labelAr}</span>
+                  </label>
+                ))}
+                {payments.length === 0 && (
+                  <span className="filter-unavailable">
+                    لا توجد خيارات مضافة حتى الآن
+                  </span>
+                )}
+              </fieldset>
+              <fieldset className="filter-group">
+                <legend>الخبرة المطلوبة</legend>
+                {experienceLevels.map((option) => (
+                  <label className="filter-check" key={option.id}>
+                    <input
+                      type="checkbox"
+                      name="experienceLevel"
+                      value={option.slug}
+                      defaultChecked={query.experienceLevel?.includes(
+                        option.slug,
+                      )}
+                    />
+                    <span>{option.labelAr}</span>
+                  </label>
+                ))}
+                {experienceLevels.length === 0 && (
+                  <span className="filter-unavailable">
+                    لا توجد خيارات مضافة حتى الآن
+                  </span>
+                )}
+              </fieldset>
+              <label className="sort-control">
+                الترتيب
+                <select
+                  name="sort"
+                  defaultValue={
+                    query.sort ?? (query.q ? 'relevance' : 'popularity')
+                  }
+                >
+                  <option value="popularity">الأكثر انتشارًا</option>
+                  <option value="newest">الأحدث</option>
+                  <option value="last_verification">تاريخ آخر مراجعة</option>
+                  {query.q && <option value="relevance">الأقرب لبحثك</option>}
+                </select>
+              </label>
+              <input type="hidden" name="pageSize" value={query.pageSize} />
+              <input type="hidden" name="view" value={view} />
+            </div>
+          </details>
           <button className="button button-outline filter-submit" type="submit">
             تطبيق البحث والتصفية
           </button>
@@ -278,7 +306,7 @@ export default async function PlatformsPage({
               <Link
                 className="filter-chip"
                 key={`${filter.key}-${filter.value ?? index}`}
-                href={removeFilterHref(query, filter.key, filter.value)}
+                href={removeFilterHref(query, filter.key, filter.value, view)}
               >
                 {filter.label}
                 <span aria-hidden="true">×</span>
@@ -300,9 +328,25 @@ export default async function PlatformsPage({
               <p className="eyebrow">منصات الدليل</p>
               <h2 id="directory-results-title">المنصات المتاحة للاستكشاف</h2>
             </div>
-            <p className="result-count">
-              {result.total.toLocaleString('ar-EG')} نتيجة
-            </p>
+            <div className="results-controls">
+              <p className="result-count">
+                {result.total.toLocaleString('ar-EG')} نتيجة
+              </p>
+              <nav className="view-toggle" aria-label="طريقة عرض النتائج">
+                <Link
+                  href={pageHref(query, 1, 'grid')}
+                  aria-current={view === 'grid' ? 'page' : undefined}
+                >
+                  شبكة
+                </Link>
+                <Link
+                  href={pageHref(query, 1, 'list')}
+                  aria-current={view === 'list' ? 'page' : undefined}
+                >
+                  قائمة
+                </Link>
+              </nav>
+            </div>
           </div>
           {result.items.length === 0 ? (
             <section
@@ -321,57 +365,9 @@ export default async function PlatformsPage({
               </div>
             </section>
           ) : (
-            <div className="platform-card-grid">
+            <div className={`platform-card-grid platform-card-${view}`}>
               {result.items.map((platform) => (
-                <article className="platform-card" key={platform.id}>
-                  <div className="platform-card-topline">
-                    <span
-                      className={`status-pill status-${platform.availabilityState}`}
-                    >
-                      {stateLabels[platform.availabilityState]}
-                    </span>
-                    {platform.warningActive && (
-                      <span className="warning-pill">تنبيه قائم</span>
-                    )}
-                  </div>
-                  <h3>
-                    <Link
-                      href={`/platforms/${encodeURIComponent(platform.slug)}`}
-                    >
-                      <bdi>{platform.name}</bdi>
-                    </Link>
-                  </h3>
-                  <div className="platform-categories">
-                    {platform.categories.map((category) => (
-                      <span key={category.id}>{category.labelAr}</span>
-                    ))}
-                  </div>
-                  {platform.restrictionNote && (
-                    <p className="restriction-note">
-                      {platform.restrictionNote}
-                    </p>
-                  )}
-                  <div className="platform-card-meta">
-                    <span>
-                      {platform.rating === null
-                        ? 'التقييمات غير متاحة بعد'
-                        : platform.rating.average === null
-                          ? `لسه مفيش تقييمات كفاية · ${platform.rating.totalReviews.toLocaleString('ar-EG')} تقييم`
-                          : `التقييم ${platform.rating.average.toLocaleString('ar-EG')}`}
-                    </span>
-                    <span>
-                      {platform.lastVerifiedOn
-                        ? `آخر مراجعة ${platform.lastVerifiedOn}`
-                        : 'لم تُسجل مراجعة بعد'}
-                    </span>
-                  </div>
-                  <Link
-                    className="platform-card-link"
-                    href={`/platforms/${encodeURIComponent(platform.slug)}`}
-                  >
-                    اعرف عن المنصة <span aria-hidden="true">←</span>
-                  </Link>
-                </article>
+                <PlatformCard key={platform.id} platform={platform} />
               ))}
             </div>
           )}
@@ -380,7 +376,7 @@ export default async function PlatformsPage({
               {query.page > 1 && (
                 <Link
                   className="button button-outline"
-                  href={pageHref(query, query.page - 1)}
+                  href={pageHref(query, query.page - 1, view)}
                 >
                   السابق
                 </Link>
@@ -392,7 +388,7 @@ export default async function PlatformsPage({
               {query.page < result.pageCount && (
                 <Link
                   className="button button-outline"
-                  href={pageHref(query, query.page + 1)}
+                  href={pageHref(query, query.page + 1, view)}
                 >
                   التالي
                 </Link>

@@ -30,7 +30,7 @@ CI covers environment configuration tests, lint, typecheck and build. A dependen
 ## First runnable application slice
 
 - [x] T0-06 Set up the strict Next.js App Router shell with Arabic RTL, self-hosted IBM Plex fonts, Tailwind and shared light-theme design tokens.
-- [x] Add the responsive ATHAR homepage, category examples, search layout and explicit unconnected directory empty state.
+- [x] Add the responsive ATHAR homepage, API-backed category links, published-platform cards, search entry point and honest unavailable-data states.
 - [x] Add the NestJS API shell, Zod-validated environment defaults and `/healthz` process check.
 - [x] Add `dev`, `dev:web`, `dev:api`, `build`, `lint` and `typecheck` workspace commands; verify both apps start.
 - [ ] T0-05 remaining work: readiness checks, Pino redaction and documented global error envelope.
@@ -43,6 +43,9 @@ CI covers environment configuration tests, lint, typecheck and build. A dependen
 - [x] Add shared Zod request/response contracts and OpenAPI for directory listing, filter facets, and platform detail routes.
 - [x] Implement published-platform listing, normalized Arabic/Latin search, filters, pagination, sorting, and public detail assembly in the API.
 - [x] Replace the disconnected directory placeholder with an RTL Next.js directory, multi-select filters, removable filter chips, pagination, detail pages, and loading/empty/error states.
+- [x] Refine the public shell, responsive directory cards, grid/list presentation, active filter URLs, and API-backed homepage category/platform sections.
+- [x] Hide absent rating/verification metadata instead of implying values, and render recoverable directory/detail API error states.
+- [x] Verify homepage RTL and mobile navigation in a browser at desktop and mobile viewports; real directory records remain unverified without PostgreSQL.
 - [x] Add API contract and OpenAPI tests; lint, typecheck, and production build pass.
 - [ ] Apply migrations and run API/database integration tests against PostgreSQL; do not mark M3 complete until those pass.
 - [ ] Populate publishable taxonomy and platform facts through the approved verification workflow; current seed examples stay unpublished.

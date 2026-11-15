@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPlatform } from '../../../lib/directory';
+import { DirectoryLoadError } from '../../../components/directory-load-error';
 
 const factLabels: Record<string, string> = {
   identity_overview: 'نبذة عن المنصة',
@@ -35,11 +36,22 @@ export default async function PlatformDetailsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const platform = await getPlatform(slug);
+  const platform = await getPlatform(slug).catch(() => undefined);
+  if (platform === undefined) {
+    return (
+      <main className="directory-page" id="main-content">
+        <div className="container">
+          <DirectoryLoadError
+            retryHref={`/platforms/${encodeURIComponent(slug)}`}
+          />
+        </div>
+      </main>
+    );
+  }
   if (!platform) notFound();
 
   return (
-    <main className="directory-page">
+    <main className="directory-page" id="main-content">
       <div className="container">
         <Link className="back-link" href="/platforms">
           ← العودة إلى دليل المنصات
